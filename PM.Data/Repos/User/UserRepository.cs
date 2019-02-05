@@ -1,15 +1,16 @@
-﻿using PM.Models.DataModel;
-using System;
-using System.Collections.Generic;
-using System.Data.Entity;
+﻿using PM.Data.Entities;
+using PM.Models.DataModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PM.Data.Repos.User
 {
     public class UserRepository : Repository<Users>, IUserRepository
     {
-        public UserRepository(DbContext dbContext) : base(dbContext) { }
+        public UserRepository(PMDbContext dbContext) : base(dbContext) { }
+
+        public override Users GetById(object identifier)
+        {
+            return Search(user => user.UserId.ToLower().Equals(identifier.ToString().ToLower())).FirstOrDefault();
+        }
     }
 }

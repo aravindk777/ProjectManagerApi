@@ -6,11 +6,12 @@ using System.Threading.Tasks;
 
 namespace PM.BL.User
 {
-    public interface IUsersLogic
+    public interface IUserLogic
     {
-        void AddUser(PM.Models.ViewModels.Users user);
+        PM.Models.ViewModels.Users AddUser(PM.Models.ViewModels.Users user);
         IEnumerable<PM.Models.ViewModels.Users> GetUsers();
         bool EditUser(string UserId, PM.Models.ViewModels.Users userViewModel);
         bool DeleteUser(string UserId);
+        PM.Models.ViewModels.Users GetUserById(string UserId);
     }
 }

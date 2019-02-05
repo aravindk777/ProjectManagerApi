@@ -50,7 +50,7 @@ namespace PM.Data.Repos
             return Context.Set<T>().AsEnumerable();
         }
 
-        public T GetById(object identifier)
+        public virtual T GetById(object identifier)
         {
             return Context.Set<T>().Find(identifier);
         }

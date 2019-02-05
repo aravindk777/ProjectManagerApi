@@ -1,4 +1,5 @@
-﻿using Swashbuckle.Application;
+﻿using PM.Api.App_Start;
+using Swashbuckle.Application;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,10 +12,15 @@ namespace PM.Api
         public static void Register(HttpConfiguration config)
         {
             // Web API configuration and services
+            config.EnableCors();
+
+            // Configure DI
+            config.DependencyResolver = new ApiDependencyResolver(DIConfig.SetupInjection());
 
             // Web API routes
             config.MapHttpAttributeRoutes();
 
+            // Enable Swagger as always base URL for this api
             config.Routes.MapHttpRoute(
                 name: "swagger_root",
                 routeTemplate: "",

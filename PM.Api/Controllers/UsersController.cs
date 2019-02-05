@@ -1,5 +1,6 @@
 ﻿using PM.BL.User;
 using PM.Models.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Web.Http;
 
@@ -7,38 +8,102 @@ namespace PM.Api.Controllers
 {
     public class UsersController : ApiController
     {
-        private IUsersLogic userLogic;
+        private IUserLogic _userOrchestrator;
 
-        public UsersController(IUsersLogic _userlogicInstance)
+        public UsersController(IUserLogic _userlogicInstance)
         {
-            userLogic = _userlogicInstance;
+            _userOrchestrator = _userlogicInstance;
         }
+
         // GET: api/Users
-        public IEnumerable<Users> Get()
+        [HttpGet]
+        //[ActionName("GetAllUsers")]
+        public IHttpActionResult GetAllUsers()
         {
-            return userLogic.GetUsers();
+            try
+            {
+                return Ok(_userOrchestrator.GetUsers());
+            }
+            catch(Exception ex)
+            {
+                return InternalServerError(ex);
+            }
         }
 
         // GET: api/Users/5
-        public string Get(int id)
+        [HttpGet]
+        //[Route("api/users/{UserId:alpha}")]
+        //[ActionName("GetById")]
+        public IHttpActionResult Get(string id)
         {
-            return "value";
+            try
+            {
+                return Ok(_userOrchestrator.GetUserById(id));
+            }
+            catch(Exception ex)
+            {
+                return InternalServerError(ex);
+            }
         }
 
         // POST: api/Users
-        public void Post([FromBody] Users value)
+        [HttpPost]
+        public IHttpActionResult Post([FromBody] Users value)
         {
-            userLogic.AddUser(value);
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var result = _userOrchestrator.AddUser(value);
+                    return Ok(result);
+                }
+                catch (Exception ex)
+                {
+                    return InternalServerError(ex);
+                }
+            }
+            else
+                return BadRequest("Invalid request information. Please verify the information entered.");
         }
 
         // PUT: api/Users/5
-        public void Put(int id, [FromBody]Users value)
+        [HttpPut]
+        public IHttpActionResult Put(string id, [FromBody]Users value)
         {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var result = _userOrchestrator.EditUser(id, value);
+                    return Ok(result);
+                }
+                catch (Exception ex)
+                {
+                    return InternalServerError(ex);
+                }
+            }
+            else
+                return BadRequest("Invalid request information. Please verify the information entered.");
         }
 
         // DELETE: api/Users/5
-        public void Delete(int id)
+        [HttpDelete]
+        public IHttpActionResult Delete(string id)
         {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var result = _userOrchestrator.DeleteUser(id);
+                    return Ok(result);
+                }
+                catch (Exception ex)
+                {
+                    return InternalServerError(ex);
+                }
+            }
+            else
+                return BadRequest("Invalid request information. Please verify the information entered.");
         }
     }
 }

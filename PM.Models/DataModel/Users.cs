@@ -14,7 +14,6 @@ namespace PM.Models.DataModel
         public string LastName { get; set; }
 
         [Required]
-        [Key]
         public string UserId { get; set; }
 
     }

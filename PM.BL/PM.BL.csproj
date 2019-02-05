@@ -48,8 +48,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common\BaseLogic.cs" />
+    <Compile Include="Project\IProjectLogic.cs" />
+    <Compile Include="Project\ProjectLogic.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="User\IUsersLogic.cs" />
+    <Compile Include="User\IUserLogic.cs" />
     <Compile Include="User\UserLogic.cs" />
   </ItemGroup>
   <ItemGroup>

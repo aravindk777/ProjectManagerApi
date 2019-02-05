@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace PM.BL.User
 {
-    public class UserLogic : BaseLogic, IUsersLogic
+    public class UserLogic : BaseLogic, IUserLogic
     {
         private readonly IUserRepository userRepository;
         private IMapper mapper;
@@ -19,10 +19,11 @@ namespace PM.BL.User
 
         }
 
-        public void AddUser(Users user)
+        public Users AddUser(Users user)
         {
-            var userModel = mapper.Map<PM.Models.ViewModels.Users, PM.Models.DataModel.Users>(user);
+            var userModel = mapper.Map<Users, Models.DataModel.Users>(user);
             var result = userRepository.Create(userModel);
+            return mapper.Map<Models.DataModel.Users, Users>(result);
         }
 
         public bool DeleteUser(string UserId)
@@ -35,9 +36,15 @@ namespace PM.BL.User
             throw new NotImplementedException();
         }
 
+        public Users GetUserById(string UserId)
+        {
+            var result = userRepository.GetById(UserId);
+            return mapper.Map<Models.DataModel.Users, Users>(result);
+        }
+
         public IEnumerable<Users> GetUsers()
         {
-            throw new NotImplementedException();
+            return mapper.Map<IEnumerable<Models.DataModel.Users>, IEnumerable<Users>>(userRepository.GetAll());
         }
     }
 }
