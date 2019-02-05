@@ -9,7 +9,7 @@ using PM.Models.ViewModels;
 
 namespace PM.BL.Project
 {
-    public class ProjectLogic : BaseLogic , IProjectLogic
+    public class ProjectLogic : IProjectLogic
     {
         private readonly IProjectRepo _projectRepo;
 
@@ -20,27 +20,27 @@ namespace PM.BL.Project
 
         public Projects CreateProject(Projects project)
         {
-            return null;
+            return _projectRepo.Create(project.AsDataModel()).AsViewModel();
         }
 
         public IEnumerable<Projects> GetAllProjects()
         {
-            _projectRepo.GetAll().AsViewModel();
+            return _projectRepo.GetAll().AsViewModel();
         }
 
         public Projects GetProject(int projId = 0, string projectName = "")
         {
-            throw new NotImplementedException();
+            return _projectRepo.GetById(projId).AsViewModel();
         }
 
         public bool Modify(int projId, Projects projectViewModel)
         {
-            throw new NotImplementedException();
+            return _projectRepo.Update(projectViewModel.AsDataModel());
         }
 
         public bool Remove(int projId)
         {
-            throw new NotImplementedException();
+            return _projectRepo.Delete(_projectRepo.GetById(projId));
         }
     }
 }

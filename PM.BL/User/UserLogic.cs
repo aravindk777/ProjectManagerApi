@@ -7,44 +7,38 @@ using System.Collections.Generic;
 
 namespace PM.BL.User
 {
-    public class UserLogic : BaseLogic, IUserLogic
+    public class UserLogic : IUserLogic
     {
         private readonly IUserRepository userRepository;
-        private IMapper mapper;
 
-        public UserLogic(IUserRepository _userRepository) : base()
+        public UserLogic(IUserRepository _userRepository)
         {
             userRepository = _userRepository;
-            mapper = base.InitializeMapping();
-
         }
 
         public Users AddUser(Users user)
         {
-            var userModel = mapper.Map<Users, Models.DataModel.Users>(user);
-            var result = userRepository.Create(userModel);
-            return mapper.Map<Models.DataModel.Users, Users>(result);
+            return userRepository.Create(user.AsDataModel()).AsViewModel();
         }
 
         public bool DeleteUser(string UserId)
         {
-            throw new NotImplementedException();
+            return userRepository.Delete(userRepository.GetById(UserId));
         }
 
         public bool EditUser(string UserId, Users userViewModel)
         {
-            throw new NotImplementedException();
+            return userRepository.Update(userViewModel.AsDataModel());
         }
 
         public Users GetUserById(string UserId)
         {
-            var result = userRepository.GetById(UserId);
-            return mapper.Map<Models.DataModel.Users, Users>(result);
+            return userRepository.GetById(UserId).AsViewModel();
         }
 
         public IEnumerable<Users> GetUsers()
         {
-            return mapper.Map<IEnumerable<Models.DataModel.Users>, IEnumerable<Users>>(userRepository.GetAll());
+            return userRepository.GetAll().AsViewModel();
         }
     }
 }

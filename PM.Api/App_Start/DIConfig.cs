@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using PM.Api.Controllers;
+using PM.BL.Project;
 using PM.BL.User;
 using PM.Data.Entities;
 using PM.Data.Repos;
@@ -35,7 +36,7 @@ namespace PM.Api.App_Start
 
                 // ---- Service Providers ----
                 .AddScoped<IUserLogic, UserLogic>()
-                //.AddScoped<IDataService, DataService>()
+                .AddScoped<IProjectLogic, ProjectLogic>()
 
                 // ---- Logging ----
                 //.AddLogging(log =>
@@ -46,6 +47,7 @@ namespace PM.Api.App_Start
 
                 // ---- API Controllers ----
                 .AddScoped<UsersController, UsersController>()
+                .AddScoped<ProjectsController, ProjectsController>()
                 ;
             return injectors.BuildServiceProvider();
         }

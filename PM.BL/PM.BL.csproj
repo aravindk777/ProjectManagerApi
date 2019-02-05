@@ -47,7 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Common\BaseLogic.cs" />
+    <Compile Include="Common\Converter.cs" />
     <Compile Include="Project\IProjectLogic.cs" />
     <Compile Include="Project\ProjectLogic.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
