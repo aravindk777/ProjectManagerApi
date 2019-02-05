@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PM.BL.Users
+namespace PM.Models.ViewModels
 {
-    public interface IUsersLogic
+    public interface IViewModel
     {
-
     }
 }
