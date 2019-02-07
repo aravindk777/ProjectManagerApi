@@ -1,11 +1,9 @@
-﻿using AutoMapper;
-using PM.BL.Common;
-using PM.Data.Repos.User;
+﻿using PM.BL.Common;
+using PM.Data.Repos.Users;
 using PM.Models.ViewModels;
-using System;
 using System.Collections.Generic;
 
-namespace PM.BL.User
+namespace PM.BL.Users
 {
     public class UserLogic : IUserLogic
     {
@@ -16,7 +14,7 @@ namespace PM.BL.User
             userRepository = _userRepository;
         }
 
-        public Users AddUser(Users user)
+        public User AddUser(Models.ViewModels.User user)
         {
             return userRepository.Create(user.AsDataModel()).AsViewModel();
         }
@@ -26,17 +24,17 @@ namespace PM.BL.User
             return userRepository.Delete(userRepository.GetById(UserId));
         }
 
-        public bool EditUser(string UserId, Users userViewModel)
+        public bool EditUser(string UserId, Models.ViewModels.User userViewModel)
         {
             return userRepository.Update(userViewModel.AsDataModel());
         }
 
-        public Users GetUserById(string UserId)
+        public User GetUserById(string UserId)
         {
             return userRepository.GetById(UserId).AsViewModel();
         }
 
-        public IEnumerable<Users> GetUsers()
+        public IEnumerable<Models.ViewModels.User> GetUsers()
         {
             return userRepository.GetAll().AsViewModel();
         }

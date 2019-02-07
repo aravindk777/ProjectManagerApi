@@ -1,11 +1,12 @@
-﻿using PM.BL.User;
+﻿using PM.BL.Users;
 using PM.Models.ViewModels;
 using System;
-using System.Collections.Generic;
 using System.Web.Http;
+using System.Web.Http.Cors;
 
 namespace PM.Api.Controllers
 {
+    [EnableCors("*", "*", "*")]
     public class UsersController : ApiController
     {
         private IUserLogic _userOrchestrator;
@@ -48,7 +49,7 @@ namespace PM.Api.Controllers
 
         // POST: api/Users
         [HttpPost]
-        public IHttpActionResult Post([FromBody] Users value)
+        public IHttpActionResult Post([FromBody] User value)
         {
             if (ModelState.IsValid)
             {
@@ -68,7 +69,7 @@ namespace PM.Api.Controllers
 
         // PUT: api/Users/5
         [HttpPut]
-        public IHttpActionResult Put(string id, [FromBody]Users value)
+        public IHttpActionResult Put(string id, [FromBody]User value)
         {
             if (ModelState.IsValid)
             {

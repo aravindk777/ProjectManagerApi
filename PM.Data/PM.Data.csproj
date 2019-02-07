@@ -52,11 +52,13 @@
     <Compile Include="Entities\PMDbContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repos\IRepository.cs" />
-    <Compile Include="Repos\Project\IProjectRepo.cs" />
-    <Compile Include="Repos\Project\ProjectRepo.cs" />
+    <Compile Include="Repos\Projects\IProjectRepo.cs" />
+    <Compile Include="Repos\Projects\ProjectRepo.cs" />
     <Compile Include="Repos\Repository.cs" />
-    <Compile Include="Repos\User\IUserRepository.cs" />
-    <Compile Include="Repos\User\UserRepository.cs" />
+    <Compile Include="Repos\Tasks\ITaskRepository.cs" />
+    <Compile Include="Repos\Tasks\TaskRepository.cs" />
+    <Compile Include="Repos\Users\IUserRepository.cs" />
+    <Compile Include="Repos\Users\UserRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

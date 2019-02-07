@@ -1,40 +1,100 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
+﻿using PM.BL.Projects;
+using PM.Models.ViewModels;
+using System;
 using System.Web.Http;
+using System.Web.Http.Cors;
 
 namespace PM.Api.Controllers
 {
+    [EnableCors("*", "*", "*")]
     public class ProjectsController : ApiController
     {
-        
+        private IProjectLogic _projectOrhestrator;
+
+        public ProjectsController(IProjectLogic projectOrhestrator)
+        {
+            _projectOrhestrator = projectOrhestrator;
+        }
+
+
         // GET: api/Projects
         public IHttpActionResult Get()
         {
-            return Ok();
+            try
+            {
+                var result = _projectOrhestrator.GetAllProjects();
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
         }
 
         // GET: api/Projects/5
-        public string Get(int id)
+        public IHttpActionResult Get(int id)
         {
-            return "value";
+            try
+            {
+                var result = _projectOrhestrator.GetProject(id);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
         }
 
         // POST: api/Projects
-        public void Post([FromBody]string value)
+        public IHttpActionResult Post([FromBody]Project value)
         {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var result = _projectOrhestrator.CreateProject(value);
+                    return Ok(result);
+                }
+                catch (Exception ex)
+                {
+                    return InternalServerError(ex);
+                }
+            }
+            else
+                return BadRequest("Invalid Project Information entered. Please check the information");
         }
 
         // PUT: api/Projects/5
-        public void Put(int id, [FromBody]string value)
+        public IHttpActionResult Put(int id, [FromBody]Project value)
         {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var result = _projectOrhestrator.Modify(id, value);
+                    return Ok(result);
+                }
+                catch (Exception ex)
+                {
+                    return InternalServerError(ex);
+                }
+            }
+            else
+                return BadRequest("Invalid Project Information entered. Please check the information");
         }
 
         // DELETE: api/Projects/5
-        public void Delete(int id)
+        public IHttpActionResult Delete(int id)
         {
+            try
+            {
+                var result = _projectOrhestrator.Remove(id);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
         }
     }
 }

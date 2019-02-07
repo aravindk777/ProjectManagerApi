@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using PM.BL.Common;
-using PM.Data.Repos.Project;
+using PM.Data.Repos.Projects;
 using PM.Models.ViewModels;
 
-namespace PM.BL.Project
+namespace PM.BL.Projects
 {
     public class ProjectLogic : IProjectLogic
     {
@@ -18,22 +14,22 @@ namespace PM.BL.Project
             _projectRepo = projectRepo;
         }
 
-        public Projects CreateProject(Projects project)
+        public Project CreateProject(Models.ViewModels.Project project)
         {
             return _projectRepo.Create(project.AsDataModel()).AsViewModel();
         }
 
-        public IEnumerable<Projects> GetAllProjects()
+        public IEnumerable<Models.ViewModels.Project> GetAllProjects()
         {
             return _projectRepo.GetAll().AsViewModel();
         }
 
-        public Projects GetProject(int projId = 0, string projectName = "")
+        public Project GetProject(int projId = 0, string projectName = "")
         {
             return _projectRepo.GetById(projId).AsViewModel();
         }
 
-        public bool Modify(int projId, Projects projectViewModel)
+        public bool Modify(int projId, Models.ViewModels.Project projectViewModel)
         {
             return _projectRepo.Update(projectViewModel.AsDataModel());
         }

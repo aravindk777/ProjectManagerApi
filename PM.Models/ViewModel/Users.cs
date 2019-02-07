@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace PM.Models.ViewModels
 {
-    public class Users : IViewModel
+    public class User
     {
         public Guid Id { get; set; }
         [Required]

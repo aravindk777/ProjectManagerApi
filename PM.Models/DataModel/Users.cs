@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace PM.Models.DataModel
 {
     [Table("Users")]
-    public class Users : IDataModel
+    public class User
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

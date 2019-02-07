@@ -1,11 +1,12 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using NLog.Extensions.Logging;
 using PM.Api.Controllers;
-using PM.BL.Project;
-using PM.BL.User;
+using PM.BL.Projects;
+using PM.BL.Users;
 using PM.Data.Entities;
 using PM.Data.Repos;
-using PM.Data.Repos.Project;
-using PM.Data.Repos.User;
+using PM.Data.Repos.Projects;
+using PM.Data.Repos.Users;
 using PM.Models.DataModel;
 using System;
 using System.Collections.Generic;
@@ -28,9 +29,9 @@ namespace PM.Api.App_Start
 
                 // ---- Repositories ----
                 .AddScoped<IUserRepository, UserRepository>()
-                .AddScoped<IRepository<Users>, Repository<Users>>()
+                .AddScoped<IRepository<User>, Repository<User>>()
                 .AddScoped<IProjectRepo, ProjectRepo>()
-                .AddScoped<IRepository<Projects>, Repository<Projects>>()
+                .AddScoped<IRepository<Project>, Repository<Project>>()
                 //.AddScoped<ITdDataRepository, TeraDataRepository>()
 
 
@@ -39,15 +40,16 @@ namespace PM.Api.App_Start
                 .AddScoped<IProjectLogic, ProjectLogic>()
 
                 // ---- Logging ----
-                //.AddLogging(log =>
-                //{
-                //    log.AddNLog(new NLogProviderOptions { CaptureMessageTemplates = true, CaptureMessageProperties = true });
-                //    SetupLogging();
-                //})
+                .AddLogging(log =>
+                {
+                    log.AddNLog(new NLogProviderOptions { CaptureMessageTemplates = true, CaptureMessageProperties = true });
+                    //SetupLogging();
+                })
 
                 // ---- API Controllers ----
                 .AddScoped<UsersController, UsersController>()
                 .AddScoped<ProjectsController, ProjectsController>()
+                .AddScoped<HealthController, HealthController>()
                 ;
             return injectors.BuildServiceProvider();
         }

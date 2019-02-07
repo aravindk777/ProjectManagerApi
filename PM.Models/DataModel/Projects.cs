@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace PM.Models.DataModel
 {
     [Table("Projects")]
-    public class Projects
+    public class Project
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -17,8 +17,8 @@ namespace PM.Models.DataModel
         public string ProjectName { get; set; }
         public DateTime? ProjectStart { get; set; }
         public DateTime? ProjectEnd { get; set; }
-        public Guid? ManagerId { get; set; }
-        public virtual Users Manager { get; set; }
+        public Guid ManagerId { get; set; }
+        public virtual User Manager { get; set; }
         public int Priority { get; set; }
     }
 }
