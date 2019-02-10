@@ -1,4 +1,5 @@
-﻿using PM.Data.Repos.Users;
+﻿using Microsoft.Extensions.Logging;
+using PM.Data.Repos.Users;
 using System;
 using System.Linq;
 using System.Web.Http;
@@ -10,10 +11,12 @@ namespace PM.Api.Controllers
     public class HealthController : ApiController
     {
         private readonly IUserRepository userRepo;
+        private readonly ILogger<HealthController> _logger;
 
-        public HealthController(IUserRepository _userRepo)
+        public HealthController(IUserRepository _userRepo, ILogger<HealthController> logInstance)
         {
             userRepo = _userRepo;
+            _logger = logInstance;
         }
 
         [HttpGet]
@@ -35,6 +38,7 @@ namespace PM.Api.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error connecting to Data repos or Db", ex.InnerException, ex.StackTrace);
                 return InternalServerError(new Exception("Db health status failed", ex));
             }
         }

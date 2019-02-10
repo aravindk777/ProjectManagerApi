@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using PM.BL.Common;
 using PM.Data.Repos.Projects;
 using PM.Models.ViewModels;
@@ -27,6 +28,11 @@ namespace PM.BL.Projects
         public Project GetProject(int projId = 0, string projectName = "")
         {
             return _projectRepo.GetById(projId).AsViewModel();
+        }
+
+        public IEnumerable<Project> GetUserProjects(string userId)
+        {
+            return _projectRepo.GetAll().Where(usr => usr.Manager.UserId == userId).AsViewModel();
         }
 
         public bool Modify(int projId, Models.ViewModels.Project projectViewModel)

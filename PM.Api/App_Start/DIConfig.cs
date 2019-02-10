@@ -1,5 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using NLog.Config;
 using NLog.Extensions.Logging;
+using NLog.Targets;
 using PM.Api.Controllers;
 using PM.BL.Projects;
 using PM.BL.Users;
@@ -10,6 +12,7 @@ using PM.Data.Repos.Users;
 using PM.Models.DataModel;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Web.Http.Dependencies;
 
 namespace PM.Api.App_Start
@@ -43,7 +46,7 @@ namespace PM.Api.App_Start
                 .AddLogging(log =>
                 {
                     log.AddNLog(new NLogProviderOptions { CaptureMessageTemplates = true, CaptureMessageProperties = true });
-                    //SetupLogging();
+                    SetupLogging();
                 })
 
                 // ---- API Controllers ----
@@ -52,6 +55,30 @@ namespace PM.Api.App_Start
                 .AddScoped<HealthController, HealthController>()
                 ;
             return injectors.BuildServiceProvider();
+        }
+
+        static void SetupLogging()
+        {
+            // Initialize the Logger
+            var nlogConfig = new LoggingConfiguration();
+
+            // Targets
+            var fileTarget = new FileTarget("FileTarget")
+            {
+                //ArchiveAboveSize = 1024 * 1024,
+                ArchiveEvery = FileArchivePeriod.Day,
+                CreateDirs = true,
+                FileName = ConfigurationManager.AppSettings["logfile"],
+                Layout = ConfigurationManager.AppSettings["loglayout"],
+                ArchiveNumbering = ArchiveNumberingMode.Sequence,                
+                Header = NLog.Layouts.Layout.FromString("_________________________________"),
+                Footer = NLog.Layouts.Layout.FromString("=================================")
+            };
+            nlogConfig.AddTarget(fileTarget);
+            nlogConfig.AddRuleForAllLevels(fileTarget);
+
+            // Setup the configuration
+            NLog.LogManager.Configuration = nlogConfig;
         }
     }
 

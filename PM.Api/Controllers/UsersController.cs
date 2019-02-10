@@ -1,4 +1,5 @@
-﻿using PM.BL.Users;
+﻿using Microsoft.Extensions.Logging;
+using PM.BL.Users;
 using PM.Models.ViewModels;
 using System;
 using System.Web.Http;
@@ -10,10 +11,12 @@ namespace PM.Api.Controllers
     public class UsersController : ApiController
     {
         private IUserLogic _userOrchestrator;
+        private readonly ILogger<UsersController> _logger;
 
-        public UsersController(IUserLogic _userlogicInstance)
+        public UsersController(IUserLogic _userlogicInstance, ILogger<UsersController> logInstance)
         {
             _userOrchestrator = _userlogicInstance;
+            _logger = logInstance;
         }
 
         // GET: api/Users
@@ -27,6 +30,7 @@ namespace PM.Api.Controllers
             }
             catch(Exception ex)
             {
+                _logger.LogError(ex, "Error during GetAllUsers", ex.InnerException, ex.StackTrace);
                 return InternalServerError(ex);
             }
         }
@@ -64,7 +68,10 @@ namespace PM.Api.Controllers
                 }
             }
             else
+            {
+                _logger.LogWarning("Invalid/Incomplete User Information - {0}", Newtonsoft.Json.JsonConvert.SerializeObject(value));
                 return BadRequest("Invalid request information. Please verify the information entered.");
+            }
         }
 
         // PUT: api/Users/5

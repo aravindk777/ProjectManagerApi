@@ -1,4 +1,5 @@
-﻿using PM.Models.DataModel;
+﻿using Microsoft.Extensions.Logging;
+using PM.Models.DataModel;
 using System.Configuration;
 using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
@@ -11,13 +12,18 @@ namespace PM.Data.Entities
         public virtual DbSet<Project> Project { get; set; }
         public virtual DbSet<Task> Task { get; set; }
 
-        public PMDbContext() : base(ConfigurationManager.ConnectionStrings["ProjectManDb"].ConnectionString)
+        private readonly ILogger<PMDbContext> _logger;
+
+        public PMDbContext(ILogger<PMDbContext> logInstance) : base(ConfigurationManager.ConnectionStrings["ProjectManDb"].ConnectionString)
         {
+            _logger = logInstance;
             Database.SetInitializer(new DropCreateDatabaseIfModelChanges<PMDbContext>());
         }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+            // _logger.LogInformation("Database Model - On recreating. ");
+
             base.OnModelCreating(modelBuilder);
             modelBuilder
                .Entity<Project>()

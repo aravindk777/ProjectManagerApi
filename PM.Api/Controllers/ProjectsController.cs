@@ -1,6 +1,8 @@
-﻿using PM.BL.Projects;
+﻿using Microsoft.Extensions.Logging;
+using PM.BL.Projects;
 using PM.Models.ViewModels;
 using System;
+using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Cors;
 
@@ -10,10 +12,12 @@ namespace PM.Api.Controllers
     public class ProjectsController : ApiController
     {
         private IProjectLogic _projectOrhestrator;
+        private ILogger<ProjectsController> logger;
 
-        public ProjectsController(IProjectLogic projectOrhestrator)
+        public ProjectsController(IProjectLogic projectOrhestrator, ILogger<ProjectsController> _logInstance)
         {
             _projectOrhestrator = projectOrhestrator;
+            logger = _logInstance;
         }
 
 
@@ -23,10 +27,12 @@ namespace PM.Api.Controllers
             try
             {
                 var result = _projectOrhestrator.GetAllProjects();
+                logger.LogInformation("Get All - total records found: " + result.Count());
                 return Ok(result);
             }
             catch (Exception ex)
             {
+                logger.LogError(ex, "Error during Get All Projects", ex.StackTrace);
                 return InternalServerError(ex);
             }
         }
@@ -53,10 +59,12 @@ namespace PM.Api.Controllers
                 try
                 {
                     var result = _projectOrhestrator.CreateProject(value);
-                    return Ok(result);
+                    var createdUrl = string.Join("/", Request.RequestUri, result.ProjectId);
+                    return Created(createdUrl, result);
                 }
                 catch (Exception ex)
                 {
+                    logger.LogError(ex, "Error during POST for Projects", ex.StackTrace, ex.InnerException);
                     return InternalServerError(ex);
                 }
             }
@@ -95,6 +103,13 @@ namespace PM.Api.Controllers
             {
                 return InternalServerError(ex);
             }
+        }
+
+        [HttpGet]
+        [Route("api/Users/{userId}/Projects")]
+        public IHttpActionResult GetUserProjects(string userId)
+        {
+            return Ok(_projectOrhestrator.GetUserProjects(userId));
         }
     }
 }
