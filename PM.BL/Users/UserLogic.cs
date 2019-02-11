@@ -26,7 +26,10 @@ namespace PM.BL.Users
 
         public bool EditUser(string UserId, Models.ViewModels.User userViewModel)
         {
-            return userRepository.Update(userViewModel.AsDataModel());
+            if (userRepository.GetById(UserId) != null)
+                return userRepository.Update(userViewModel.AsDataModel());
+            else
+                return false;
         }
 
         public User GetUserById(string UserId)

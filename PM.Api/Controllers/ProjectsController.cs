@@ -105,6 +105,12 @@ namespace PM.Api.Controllers
             }
         }
 
+        /// <summary>
+        /// Returns list of projects associated to the manager by UserId
+        /// </summary>
+        /// <param name="userId">UserId of the manager</param>
+        /// <returns>List of Projects belonging to the User</returns>
+        /// <example>api/Users/user1/Projects</example>
         [HttpGet]
         [Route("api/Users/{userId}/Projects")]
         public IHttpActionResult GetUserProjects(string userId)

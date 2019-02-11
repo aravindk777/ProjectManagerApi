@@ -28,7 +28,7 @@ namespace PM.Api.Controllers
             {
                 return Ok(_userOrchestrator.GetUsers());
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 _logger.LogError(ex, "Error during GetAllUsers", ex.InnerException, ex.StackTrace);
                 return InternalServerError(ex);
@@ -45,7 +45,7 @@ namespace PM.Api.Controllers
             {
                 return Ok(_userOrchestrator.GetUserById(id));
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return InternalServerError(ex);
             }
@@ -83,10 +83,14 @@ namespace PM.Api.Controllers
                 try
                 {
                     var result = _userOrchestrator.EditUser(id, value);
-                    return Ok(result);
+                    if (result)
+                        return Ok(result);
+                    else
+                        return NotFound();
                 }
                 catch (Exception ex)
                 {
+                    _logger.LogError(ex, "Error during Update");
                     return InternalServerError(ex);
                 }
             }

@@ -32,7 +32,10 @@ namespace PM.BL.Projects
 
         public IEnumerable<Project> GetUserProjects(string userId)
         {
-            return _projectRepo.GetAll().Where(usr => usr.Manager.UserId == userId).AsViewModel();
+            var result = _projectRepo.Search(p => p.Manager.UserId == userId);
+            return result.AsViewModel();
+            //var finaldata = result.AsViewModel();
+            //return _projectRepo.GetAll().Where(usr => usr.Manager.UserId == userId).AsViewModel();
         }
 
         public bool Modify(int projId, Models.ViewModels.Project projectViewModel)
