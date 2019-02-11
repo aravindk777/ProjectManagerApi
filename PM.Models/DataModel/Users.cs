@@ -14,6 +14,8 @@ namespace PM.Models.DataModel
         public string LastName { get; set; }
 
         [Required]
+        [Index(IsUnique = true)]
+        [MaxLength(15, ErrorMessage = "UserId cannot be more than 15 character length")]
         public string UserId { get; set; }
 
     }
