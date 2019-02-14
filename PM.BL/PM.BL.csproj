@@ -110,6 +110,8 @@
     <Compile Include="Projects\IProjectLogic.cs" />
     <Compile Include="Projects\ProjectLogic.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tasks\ITaskLogic.cs" />
+    <Compile Include="Tasks\TaskLogic.cs" />
     <Compile Include="Users\IUserLogic.cs" />
     <Compile Include="Users\UserLogic.cs" />
   </ItemGroup>
@@ -126,8 +128,6 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Tasks\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -26,9 +26,9 @@ namespace PM.Data.Repos
                 Context.Entry<T>(entity).Reload();
                 return entity;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw ex;
+                throw;
             }
         }
 
@@ -39,9 +39,9 @@ namespace PM.Data.Repos
                 Context.Set<T>().Remove(entity);
                 return Context.SaveChanges() != 0;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw ex;
+                throw;
             }
         }
 
@@ -71,9 +71,9 @@ namespace PM.Data.Repos
                 //Context.Entry(entity).CurrentValues.SetValues(entity);
                 return Context.SaveChanges() != 0;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw ex;
+                throw;
             }
         }
     }

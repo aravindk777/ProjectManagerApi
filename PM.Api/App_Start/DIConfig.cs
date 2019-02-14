@@ -4,10 +4,12 @@ using NLog.Extensions.Logging;
 using NLog.Targets;
 using PM.Api.Controllers;
 using PM.BL.Projects;
+using PM.BL.Tasks;
 using PM.BL.Users;
 using PM.Data.Entities;
 using PM.Data.Repos;
 using PM.Data.Repos.Projects;
+using PM.Data.Repos.Tasks;
 using PM.Data.Repos.Users;
 using PM.Models.DataModel;
 using System;
@@ -35,12 +37,14 @@ namespace PM.Api.App_Start
                 .AddScoped<IRepository<User>, Repository<User>>()
                 .AddScoped<IProjectRepo, ProjectRepo>()
                 .AddScoped<IRepository<Project>, Repository<Project>>()
-                //.AddScoped<ITdDataRepository, TeraDataRepository>()
+                .AddScoped<ITaskRepository, TaskRepository>()
+                .AddScoped<IRepository<Task>, Repository<Task>>()
 
 
                 // ---- Service Providers ----
                 .AddScoped<IUserLogic, UserLogic>()
                 .AddScoped<IProjectLogic, ProjectLogic>()
+                .AddScoped<ITaskLogic, TaskLogic>()
 
                 // ---- Logging ----
                 .AddLogging(log =>
@@ -53,6 +57,7 @@ namespace PM.Api.App_Start
                 .AddScoped<UsersController, UsersController>()
                 .AddScoped<ProjectsController, ProjectsController>()
                 .AddScoped<HealthController, HealthController>()
+                .AddScoped<TasksController, TasksController>()
                 ;
             return injectors.BuildServiceProvider();
         }

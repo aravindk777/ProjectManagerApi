@@ -23,6 +23,7 @@ namespace PM.BL.Projects
         public IEnumerable<Models.ViewModels.Project> GetAllProjects()
         {
             return _projectRepo.GetAll().AsViewModel();
+                    //.Select(item => item.AsViewModel());
         }
 
         public Project GetProject(int projId = 0, string projectName = "")
@@ -32,10 +33,11 @@ namespace PM.BL.Projects
 
         public IEnumerable<Project> GetUserProjects(string userId)
         {
-            var result = _projectRepo.Search(p => p.Manager.UserId == userId);
-            return result.AsViewModel();
+            var result = _projectRepo.Search(p => p.Manager.UserId == userId).AsViewModel();
+                //.Select(item => item.AsViewModel());
             //var finaldata = result.AsViewModel();
             //return _projectRepo.GetAll().Where(usr => usr.Manager.UserId == userId).AsViewModel();
+            return result;
         }
 
         public bool Modify(int projId, Models.ViewModels.Project projectViewModel)
