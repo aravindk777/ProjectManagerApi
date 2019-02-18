@@ -9,5 +9,6 @@ namespace PM.Data.Repos.Users
 {
     public interface IUserRepository : IRepository<Models.DataModel.User>
     {
+        bool DeleteUser(string userId);
     }
 }

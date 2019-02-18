@@ -4,10 +4,12 @@ using PM.Models.ViewModels;
 using System;
 using System.Web.Http;
 using System.Web.Http.Cors;
+using System.Web.Http.Description;
 
 namespace PM.Api.Controllers
 {
     [EnableCors("*", "*", "*")]
+    [RoutePrefix("api/Users")]
     public class UsersController : ApiController
     {
         private IUserLogic _userOrchestrator;
@@ -116,6 +118,29 @@ namespace PM.Api.Controllers
             }
             else
                 return BadRequest("Invalid request information. Please verify the information entered.");
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="keyword"></param>
+        /// <param name="matchExact"></param>
+        /// <param name="fieldType"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [ActionName("Search")]
+        [Route("Search")]
+        public IHttpActionResult Search(string keyword, bool matchExact =false, string fieldType = "")
+        {
+            try
+            {
+                return Ok(_userOrchestrator.Search(keyword, matchExact, fieldType));
+            }
+            catch(Exception ex)
+            {
+                _logger.LogError(ex, $"Error during Search by {keyword} with additional params exactMatch-{matchExact} and fieldType- {fieldType}");
+                return InternalServerError(ex);
+            }
         }
     }
 }

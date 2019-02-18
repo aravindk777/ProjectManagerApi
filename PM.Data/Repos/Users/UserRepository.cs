@@ -4,9 +4,16 @@ using System.Linq;
 
 namespace PM.Data.Repos.Users
 {
-    public class UserRepository : Repository<Models.DataModel.User>, IUserRepository
+    public class UserRepository : Repository<User>, IUserRepository
     {
         public UserRepository(PMDbContext dbContext) : base(dbContext) { }
+
+        public bool DeleteUser(string userId)
+        {
+            var userToSoftDelete = GetById(userId);
+            userToSoftDelete.EndDate = System.DateTime.Now;
+            return Update(userToSoftDelete);
+        }
 
         public override User GetById(object identifier)
         {

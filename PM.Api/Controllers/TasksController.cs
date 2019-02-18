@@ -21,8 +21,11 @@ namespace PM.Api.Controllers
             _logger = logger;
         }
 
-
         // GET: api/Tasks
+        /// <summary>
+        /// Get all Tasks
+        /// </summary>
+        /// <returns>List of all Tasks</returns>
         public IHttpActionResult Get()
         {
             try
@@ -41,7 +44,7 @@ namespace PM.Api.Controllers
         {
             try
             {
-                var result = taskLogic.GetTask(id, string.Empty);
+                var result = taskLogic.GetTask(id);
                 if (result == null)
                 {
                     _logger.LogWarning($"No data available for GET Task by ID - {id}.");

@@ -25,6 +25,7 @@ namespace PM.Data.Entities
             // _logger.LogInformation("Database Model - On recreating. ");
 
             base.OnModelCreating(modelBuilder);
+
             modelBuilder
                .Entity<Project>()
                .HasRequired(mgr => mgr.Manager)

@@ -74,13 +74,16 @@ namespace PM.BL.Common
             return mapper.Map<IEnumerable<PM.Models.DataModel.User>, IEnumerable<PM.Models.ViewModels.User>>(userData);
         }
 
-        public static PM.Models.DataModel.User AsDataModel(this PM.Models.ViewModels.User userData)
+        public static PM.Models.DataModel.User AsDataModel(this PM.Models.ViewModels.User userData, bool isCreate = false)
         {
             var config = new MapperConfiguration(cfg => {
-                cfg.CreateMap<PM.Models.ViewModels.User, PM.Models.DataModel.User>().ReverseMap();
+                cfg.CreateMap<PM.Models.ViewModels.User, PM.Models.DataModel.User>()
+                .ReverseMap();
             });
-
-            return config.CreateMapper().Map<PM.Models.ViewModels.User, PM.Models.DataModel.User>(userData);
+            var mapper = config.CreateMapper();
+            if (isCreate)
+                return mapper.Map<PM.Models.ViewModels.User, PM.Models.DataModel.User>(userData, opts => opts.ConfigureMap().ForMember(m => m.Created, d => d.AddTransform(v => System.DateTime.Now)));
+            return mapper.Map<PM.Models.ViewModels.User, PM.Models.DataModel.User>(userData);
         }
 
         public static IEnumerable<PM.Models.DataModel.User> AsDataModel(this IEnumerable<PM.Models.ViewModels.User> userData)

@@ -17,10 +17,5 @@ namespace PM.Data.Repos.Tasks
             taskToEnd.EndDate = DateTime.Now;
             return Update(taskToEnd);
         }
-
-        public Task GetTaskByName(string name)
-        {
-            return Search(task => task.TaskName.ToLower().Contains(name.ToLower())).FirstOrDefault();
-        }
     }
 }

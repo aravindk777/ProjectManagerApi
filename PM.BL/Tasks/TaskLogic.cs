@@ -30,13 +30,9 @@ namespace PM.BL.Tasks
                 return false;
         }
 
-        public Models.ViewModels.Task GetTask(int taskId, string taskName)
+        public Models.ViewModels.Task GetTask(int taskId)
         {
             var result = taskRepository.GetById(taskId).AsViewModel();
-            if(result == null && !string.IsNullOrEmpty(taskName))
-            {
-                result = taskRepository.GetTaskByName(taskName).AsViewModel();
-            }
             return result;
         }
 

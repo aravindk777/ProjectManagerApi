@@ -2,6 +2,7 @@
 using PM.Data.Repos.Users;
 using PM.Models.ViewModels;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace PM.BL.Users
 {
@@ -16,12 +17,12 @@ namespace PM.BL.Users
 
         public User AddUser(Models.ViewModels.User user)
         {
-            return userRepository.Create(user.AsDataModel()).AsViewModel();
+            return userRepository.Create(user.AsDataModel(true)).AsViewModel();
         }
 
         public bool DeleteUser(string UserId)
         {
-            return userRepository.Delete(userRepository.GetById(UserId));
+            return userRepository.DeleteUser(UserId);
         }
 
         public bool EditUser(string UserId, Models.ViewModels.User userViewModel)
@@ -40,6 +41,30 @@ namespace PM.BL.Users
         public IEnumerable<Models.ViewModels.User> GetUsers()
         {
             return userRepository.GetAll().AsViewModel();
+        }
+
+        public IEnumerable<User> Search(string keyword, bool exactMatch = false, string fieldType = "")
+        {
+            if (!string.IsNullOrEmpty(fieldType))
+            { 
+                switch (fieldType.ToLower().Trim())
+                {
+                    case "firstname":
+                        return userRepository.Search(u => exactMatch ? u.FirstName.ToLower().Equals(keyword.ToLower()) : u.FirstName.ToLower().Contains(keyword.ToLower())).AsViewModel();
+
+                    case "lastname":
+                        return userRepository.Search(u => exactMatch ? u.LastName.ToLower().Equals(keyword.ToLower()) : u.LastName.ToLower().Contains(keyword.ToLower())).AsViewModel();
+
+                    case "userid":
+                        return userRepository.Search(u => exactMatch ? u.UserId.ToLower().Equals(keyword.ToLower()) : u.UserId.ToLower().Contains(keyword.ToLower())).AsViewModel();
+                }
+            }
+            var resultSet = userRepository.Search(u => exactMatch ? u.FirstName.ToLower().Equals(keyword.ToLower()) : u.FirstName.ToLower().Contains(keyword.ToLower()))
+                            .Union(userRepository.Search(u => exactMatch ? u.LastName.ToLower().Equals(keyword.ToLower()) : u.LastName.ToLower().Contains(keyword.ToLower())))
+                            .Union(userRepository.Search(u => exactMatch ? u.UserId.ToLower().Equals(keyword.ToLower()) : u.UserId.ToLower().Contains(keyword.ToLower())))
+                            .AsViewModel();
+            return resultSet;
+                
         }
     }
 }

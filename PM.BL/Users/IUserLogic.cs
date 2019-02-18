@@ -13,5 +13,6 @@ namespace PM.BL.Users
         bool EditUser(string UserId, PM.Models.ViewModels.User userViewModel);
         bool DeleteUser(string UserId);
         PM.Models.ViewModels.User GetUserById(string UserId);
+        IEnumerable<PM.Models.ViewModels.User> Search(string keyword, bool exactMatch = false, string fieldType = "");
     }
 }
