@@ -11,6 +11,7 @@ namespace PM.Data.Repos.Users
         public bool DeleteUser(string userId)
         {
             var userToSoftDelete = GetById(userId);
+            if (userToSoftDelete == null) return false;
             userToSoftDelete.EndDate = System.DateTime.Now;
             return Update(userToSoftDelete);
         }

@@ -6,13 +6,18 @@ using PM.Models.ViewModels;
 
 namespace PM.BL.Projects
 {
-    public class ProjectLogic : IProjectLogic
+    public class ProjectLogic : IProjectLogic, ICommonLogic
     {
         private readonly IProjectRepo _projectRepo;
 
         public ProjectLogic(IProjectRepo projectRepo)
         {
             _projectRepo = projectRepo;
+        }
+
+        public int Count()
+        {
+            return _projectRepo.Count();
         }
 
         public Project CreateProject(Models.ViewModels.Project project)

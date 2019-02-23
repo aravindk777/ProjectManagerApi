@@ -59,7 +59,9 @@ namespace PM.BL.Common
         public static PM.Models.ViewModels.User AsViewModel(this PM.Models.DataModel.User userData)
         {
             var config = new MapperConfiguration(cfg => {
-                cfg.CreateMap<PM.Models.DataModel.User, PM.Models.ViewModels.User>().ReverseMap();
+                cfg.CreateMap<PM.Models.DataModel.User, PM.Models.ViewModels.User>()
+                .ForMember(vm => vm.Active, d => d.MapFrom(m => !(m.EndDate.HasValue && m.EndDate.Value.CompareTo(System.DateTime.Today) <=0)))
+                .ReverseMap();
             });
 
             return config.CreateMapper().Map<PM.Models.DataModel.User, PM.Models.ViewModels.User>(userData);
@@ -68,7 +70,9 @@ namespace PM.BL.Common
         public static IEnumerable<PM.Models.ViewModels.User> AsViewModel(this IEnumerable<PM.Models.DataModel.User> userData)
         {
             var config = new MapperConfiguration(cfg => {                
-                cfg.CreateMap<PM.Models.DataModel.User, PM.Models.ViewModels.User>().ReverseMap();
+                cfg.CreateMap<PM.Models.DataModel.User, PM.Models.ViewModels.User>()
+                .ForMember(vm => vm.Active, d => d.MapFrom(m => !m.EndDate.HasValue))
+                .ReverseMap();
             });
             var mapper = config.CreateMapper();
             return mapper.Map<IEnumerable<PM.Models.DataModel.User>, IEnumerable<PM.Models.ViewModels.User>>(userData);

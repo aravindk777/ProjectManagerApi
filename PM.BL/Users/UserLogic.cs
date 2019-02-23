@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace PM.BL.Users
 {
-    public class UserLogic : IUserLogic
+    public class UserLogic : IUserLogic, ICommonLogic
     {
         private readonly IUserRepository userRepository;
 
@@ -15,9 +15,14 @@ namespace PM.BL.Users
             userRepository = _userRepository;
         }
 
-        public User AddUser(Models.ViewModels.User user)
+        public User AddUser(User user)
         {
             return userRepository.Create(user.AsDataModel(true)).AsViewModel();
+        }
+
+        public int Count()
+        {
+            return userRepository.Count();
         }
 
         public bool DeleteUser(string UserId)
@@ -25,7 +30,7 @@ namespace PM.BL.Users
             return userRepository.DeleteUser(UserId);
         }
 
-        public bool EditUser(string UserId, Models.ViewModels.User userViewModel)
+        public bool EditUser(string UserId, User userViewModel)
         {
             if (userRepository.GetById(UserId) != null)
                 return userRepository.Update(userViewModel.AsDataModel());
@@ -38,9 +43,12 @@ namespace PM.BL.Users
             return userRepository.GetById(UserId).AsViewModel();
         }
 
-        public IEnumerable<Models.ViewModels.User> GetUsers()
+        public IEnumerable<User> GetUsers(bool active = false)
         {
-            return userRepository.GetAll().AsViewModel();
+            var results = userRepository.GetAll();
+            if (active)
+                results = results.Where(data => (!data.EndDate.HasValue || data.EndDate.Value.Equals(System.DateTime.MinValue)));
+            return results.AsViewModel();
         }
 
         public IEnumerable<User> Search(string keyword, bool exactMatch = false, string fieldType = "")

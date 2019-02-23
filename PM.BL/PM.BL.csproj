@@ -107,6 +107,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common\Converter.cs" />
+    <Compile Include="Common\ICommonLogic.cs" />
     <Compile Include="Projects\IProjectLogic.cs" />
     <Compile Include="Projects\ProjectLogic.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

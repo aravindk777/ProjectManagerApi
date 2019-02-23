@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace PM.BL.Tasks
 {
-    public class TaskLogic : ITaskLogic
+    public class TaskLogic : ITaskLogic, ICommonLogic
     {
         public readonly ITaskRepository taskRepository;
 
@@ -72,5 +72,10 @@ namespace PM.BL.Tasks
             return taskRepository.EndTask(taskId);
         }
         #endregion
+
+        public int Count()
+        {
+            return taskRepository.Count();
+        }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using PM.Api.Extensions;
 using PM.BL.Tasks;
 using PM.Models.ViewModels;
 using System;
@@ -95,13 +96,13 @@ namespace PM.Api.Controllers
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError(ex, $"Error during Creating new Task with value - {Newtonsoft.Json.JsonConvert.SerializeObject(value)}");
+                    _logger.LogError(ex, $"Error during Creating new Task with value - {value.Stringify()}");
                     return InternalServerError(ex);
                 }
             }
             else
             {
-                _logger.LogWarning("Invalid/Incomplete Task Information - {0}", Newtonsoft.Json.JsonConvert.SerializeObject(value));
+                _logger.LogWarning("Invalid/Incomplete Task Information - {0}", value.Stringify());
                 return BadRequest(ModelState); //"Invalid request information. Please verify the information entered.", 
             }
         }
@@ -117,13 +118,13 @@ namespace PM.Api.Controllers
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError(ex, $"Error during Updating Task by Id - {id} with new values: {Newtonsoft.Json.JsonConvert.SerializeObject(value)}");
+                    _logger.LogError(ex, $"Error during Updating Task by Id - {id} with new values: {value.Stringify()}");
                     return InternalServerError(ex);
                 }
             }
             else
             {
-                _logger.LogWarning("Invalid/Incomplete Task Information - {0}", Newtonsoft.Json.JsonConvert.SerializeObject(value));
+                _logger.LogWarning("Invalid/Incomplete Task Information - {0}", value.Stringify());
                 return BadRequest(ModelState); //"Invalid request information. Please verify the information entered.", 
             }
         }

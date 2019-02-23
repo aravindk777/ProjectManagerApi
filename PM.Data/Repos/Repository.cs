@@ -17,6 +17,11 @@ namespace PM.Data.Repos
             Context = _context;
         }
 
+        public int Count()
+        {
+            return Context.Set<T>().Count();
+        }
+
         public T Create(T entity)
         {
             try

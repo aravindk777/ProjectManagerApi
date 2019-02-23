@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using PM.Api.Extensions;
 using PM.BL.Projects;
 using PM.Models.ViewModels;
 using System;
@@ -19,7 +20,6 @@ namespace PM.Api.Controllers
             _projectOrhestrator = projectOrhestrator;
             logger = _logInstance;
         }
-
 
         // GET: api/Projects
         public IHttpActionResult Get()
@@ -64,12 +64,15 @@ namespace PM.Api.Controllers
                 }
                 catch (Exception ex)
                 {
-                    logger.LogError(ex, "Error during POST for Projects", ex.StackTrace, ex.InnerException);
+                    logger.LogError(ex, "Error during POST for Projects with incoming Values: {0}", value.Stringify());
                     return InternalServerError(ex);
                 }
             }
             else
-                return BadRequest("Invalid Project Information entered. Please check the information");
+            {
+                logger.LogWarning("Invalid ModelState. See below for details.\nModelState: {0}\nData supplied:{1}", ModelState.Stringify(), value.Stringify());
+                return BadRequest(ModelState);
+            }
         }
 
         // PUT: api/Projects/5
@@ -84,11 +87,15 @@ namespace PM.Api.Controllers
                 }
                 catch (Exception ex)
                 {
+                    logger.LogError(ex, $"Error during Update to Project Id {id} with values: {value.Stringify()}");
                     return InternalServerError(ex);
                 }
             }
             else
-                return BadRequest("Invalid Project Information entered. Please check the information");
+            {
+                logger.LogWarning("Model state is invalid .See below for details\nModelState: {0}\nIncoming changes: {1}", ModelState.Stringify(), value.Stringify());
+                return BadRequest(ModelState);
+            }
         }
 
         // DELETE: api/Projects/5
@@ -101,6 +108,7 @@ namespace PM.Api.Controllers
             }
             catch (Exception ex)
             {
+                logger.LogError(ex, "Error during Deleting the Project with Id {0}", id);
                 return InternalServerError(ex);
             }
         }
