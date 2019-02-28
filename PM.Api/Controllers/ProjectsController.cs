@@ -83,7 +83,10 @@ namespace PM.Api.Controllers
                 try
                 {
                     var result = _projectOrhestrator.Modify(id, value);
-                    return Ok(result);
+                    if (result)
+                        return Ok(result);
+                    else
+                        return NotFound();
                 }
                 catch (Exception ex)
                 {

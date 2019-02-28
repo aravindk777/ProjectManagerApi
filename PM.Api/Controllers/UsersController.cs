@@ -127,24 +127,16 @@ namespace PM.Api.Controllers
         [HttpDelete]
         public IHttpActionResult Delete(string id)
         {
-            if (ModelState.IsValid)
+            try
             {
-                try
-                {
-                    var result = _userOrchestrator.DeleteUser(id);
-                    _logger.LogWarning($"User {id} was attempted to be deleted and it status - {result}");
-                    return Ok(result);
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogError(ex, "Error during Delete for UserId - {0}", id);
-                    return InternalServerError(ex);
-                }
+                var result = _userOrchestrator.DeleteUser(id);
+                _logger.LogWarning($"User {id} was attempted to be deleted and it status - {result}");
+                return Ok(result);
             }
-            else
+            catch (Exception ex)
             {
-                _logger.LogWarning("Invalid input for Deleting the User - {1}. Check the model state information - {0}", ModelState.Values.Stringify(), id);
-                return BadRequest("Invalid request information. Please verify the information entered.");
+                _logger.LogError(ex, "Error during Delete for UserId - {0}", id);
+                return InternalServerError(ex);
             }
         }
 
@@ -158,13 +150,13 @@ namespace PM.Api.Controllers
         [HttpGet]
         [ActionName("Search")]
         [Route("Search")]
-        public IHttpActionResult Search(string keyword, bool matchExact =false, string fieldType = "")
+        public IHttpActionResult Search(string keyword, bool matchExact = false, string fieldType = "")
         {
             try
             {
                 return Ok(_userOrchestrator.Search(keyword, matchExact, fieldType));
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 _logger.LogError(ex, $"Error during Search by {keyword} with additional params exactMatch-{matchExact} and fieldType- {fieldType}");
                 return InternalServerError(ex);
