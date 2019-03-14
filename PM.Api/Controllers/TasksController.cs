@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using NLog;
 using PM.Api.Extensions;
 using PM.BL.Tasks;
 using PM.Models.ViewModels;
@@ -14,9 +14,9 @@ namespace PM.Api.Controllers
     public class TasksController : ApiController
     {
         private readonly ITaskLogic taskLogic;
-        private readonly ILogger<TasksController> _logger;
+        private readonly ILogger _logger;
 
-        public TasksController(ITaskLogic _logic, ILogger<TasksController> logger)
+        public TasksController(ITaskLogic _logic, ILogger logger)
         {
             taskLogic = _logic;
             _logger = logger;
@@ -35,7 +35,7 @@ namespace PM.Api.Controllers
             }
             catch(Exception ex)
             {
-                _logger.LogError(ex, "Error during GET All Tasks");
+                _logger.Error(ex, "Error during GET All Tasks");
                 return InternalServerError(ex);
             }
         }
@@ -48,14 +48,14 @@ namespace PM.Api.Controllers
                 var result = taskLogic.GetTask(id);
                 if (result == null)
                 {
-                    _logger.LogWarning($"No data available for GET Task by ID - {id}.");
+                    _logger.Warn($"No data available for GET Task by ID - {id}.");
                     return NotFound();
                 }
                 return Ok(result);
             }
             catch(Exception ex)
             {
-                _logger.LogError(ex, $"Error during GET Task by Id - {id}.");
+                _logger.Error(ex, $"Error during GET Task by Id - {id}.");
                 return InternalServerError(ex);
             }
         }
@@ -95,13 +95,13 @@ namespace PM.Api.Controllers
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError(ex, $"Error during Creating new Task with value - {value.Stringify()}");
+                    _logger.Error(ex, $"Error during Creating new Task with value - {value.Stringify()}");
                     return InternalServerError(ex);
                 }
             }
             else
             {
-                _logger.LogWarning("Invalid/Incomplete Task Information - {0}", value.Stringify());
+                _logger.Warn("Invalid/Incomplete Task Information - {0}", value.Stringify());
                 return BadRequest(ModelState); //"Invalid request information. Please verify the information entered.", 
             }
         }
@@ -117,13 +117,13 @@ namespace PM.Api.Controllers
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError(ex, $"Error during Updating Task by Id - {id} with new values: {value.Stringify()}");
+                    _logger.Error(ex, $"Error during Updating Task by Id - {id} with new values: {value.Stringify()}");
                     return InternalServerError(ex);
                 }
             }
             else
             {
-                _logger.LogWarning("Invalid/Incomplete Task Information - {0}", value.Stringify());
+                _logger.Warn("Invalid/Incomplete Task Information - {0}", value.Stringify());
                 return BadRequest(ModelState); //"Invalid request information. Please verify the information entered.", 
             }
         }
@@ -137,7 +137,7 @@ namespace PM.Api.Controllers
             }
             catch(Exception ex)
             {
-                _logger.LogError(ex, $"Error during Deleting Task Id - {id}");
+                _logger.Error(ex, $"Error during Deleting Task Id - {id}");
                 return InternalServerError(ex);
             }
         }
@@ -152,7 +152,7 @@ namespace PM.Api.Controllers
             }
             catch(Exception ex)
             {
-                _logger.LogError(ex, $"Error during GET Tasks by ProjectId - {projectId}");
+                _logger.Error(ex, $"Error during GET Tasks by ProjectId - {projectId}");
                 return InternalServerError(ex);
             }
         }
@@ -167,7 +167,7 @@ namespace PM.Api.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"Error during GET Tasks by User Id - {UserId}");
+                _logger.Error(ex, $"Error during GET Tasks by User Id - {UserId}");
                 return InternalServerError(ex);
             }
         }
@@ -182,7 +182,7 @@ namespace PM.Api.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"Error during GET Tasks by User Id - {UserId} by Project Id - {projId}");
+                _logger.Error(ex, $"Error during GET Tasks by User Id - {UserId} by Project Id - {projId}");
                 return InternalServerError(ex);
             }
         }
@@ -197,7 +197,7 @@ namespace PM.Api.Controllers
             }
             catch(Exception ex)
             {
-                _logger.LogError(ex, $"Error during Ending the Task Id - {taskId}.");
+                _logger.Error(ex, $"Error during Ending the Task Id - {taskId}.");
                 return InternalServerError(ex);
             }
         }

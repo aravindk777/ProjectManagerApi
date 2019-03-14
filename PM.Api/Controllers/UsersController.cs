@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using NLog;
 using PM.Api.Extensions;
 using PM.BL.Users;
 using PM.Models.ViewModels;
@@ -14,9 +14,9 @@ namespace PM.Api.Controllers
     public class UsersController : ApiController
     {
         private IUserLogic _userOrchestrator;
-        private readonly ILogger<UsersController> _logger;
+        private readonly ILogger _logger;
 
-        public UsersController(IUserLogic _userlogicInstance, ILogger<UsersController> logInstance)
+        public UsersController(IUserLogic _userlogicInstance, ILogger logInstance)
         {
             _userOrchestrator = _userlogicInstance;
             _logger = logInstance;
@@ -30,12 +30,12 @@ namespace PM.Api.Controllers
             try
             {
                 var result = _userOrchestrator.GetUsers();
-                _logger.LogDebug("GetAllUsers invoked with count - " + result.Count());
+                _logger.Debug("GetAllUsers invoked with count - " + result.Count());
                 return Ok(result);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error during GetAllUsers", ex.InnerException, ex.StackTrace);
+                _logger.Error(ex, "Error during GetAllUsers", ex.InnerException, ex.StackTrace);
                 return InternalServerError(ex);
             }
         }
@@ -51,7 +51,7 @@ namespace PM.Api.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error during GetAllUsers", ex.InnerException, ex.StackTrace);
+                _logger.Error(ex, "Error during GetAllUsers", ex.InnerException, ex.StackTrace);
                 return InternalServerError(ex);
             }
         }
@@ -85,13 +85,13 @@ namespace PM.Api.Controllers
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError(ex, "Error during Creating a new user. Data attempted in JSON format: {0}", value.Stringify());
+                    _logger.Error(ex, "Error during Creating a new user. Data attempted in JSON format: {0}", value.Stringify());
                     return InternalServerError(ex);
                 }
             }
             else
             {
-                _logger.LogWarning("Invalid/Incomplete User Information - {0}", value.Stringify());
+                _logger.Warn("Invalid/Incomplete User Information - {0}", value.Stringify());
                 return BadRequest("Invalid request information. Please verify the information entered.");
             }
         }
@@ -112,13 +112,13 @@ namespace PM.Api.Controllers
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError(ex, "Error during Update with the values supplied in JSON Format - {0}", value.Stringify());
+                    _logger.Error(ex, "Error during Update with the values supplied in JSON Format - {0}", value.Stringify());
                     return InternalServerError(ex);
                 }
             }
             else
             {
-                _logger.LogWarning("Invalid input during Update for the User - {1}. Check the model state information - {0}", ModelState.Values.Stringify(), id);
+                _logger.Warn("Invalid input during Update for the User - {1}. Check the model state information - {0}", ModelState.Values.Stringify(), id);
                 return BadRequest("Invalid request information. Please verify the information entered.");
             }
         }
@@ -130,12 +130,12 @@ namespace PM.Api.Controllers
             try
             {
                 var result = _userOrchestrator.DeleteUser(id);
-                _logger.LogWarning($"User {id} was attempted to be deleted and it status - {result}");
+                _logger.Warn($"User {id} was attempted to be deleted and it status - {result}");
                 return Ok(result);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error during Delete for UserId - {0}", id);
+                _logger.Error(ex, "Error during Delete for UserId - {0}", id);
                 return InternalServerError(ex);
             }
         }
@@ -158,7 +158,7 @@ namespace PM.Api.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"Error during Search by {keyword} with additional params exactMatch-{matchExact} and fieldType- {fieldType}");
+                _logger.Error(ex, $"Error during Search by {keyword} with additional params exactMatch-{matchExact} and fieldType- {fieldType}");
                 return InternalServerError(ex);
             }
         }

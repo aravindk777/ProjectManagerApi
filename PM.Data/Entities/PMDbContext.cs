@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
-using PM.Models.DataModel;
+﻿using PM.Models.DataModel;
 using System.Configuration;
 using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
@@ -12,11 +11,12 @@ namespace PM.Data.Entities
         public virtual DbSet<Project> Project { get; set; }
         public virtual DbSet<Task> Task { get; set; }
 
-        private readonly ILogger<PMDbContext> _logger;
+        //private readonly ILogger<PMDbContext> _logger;
 
-        public PMDbContext(ILogger<PMDbContext> logInstance) : base(ConfigurationManager.ConnectionStrings["ProjectManDb"].ConnectionString)
+        //public PMDbContext(ILogger<PMDbContext> logInstance) : base(ConfigurationManager.ConnectionStrings["ProjectManDb"].ConnectionString)
+        public PMDbContext() : base(ConfigurationManager.ConnectionStrings["ProjectManDb"].ConnectionString)
         {
-            _logger = logInstance;
+            //_logger = logInstance;
             Database.SetInitializer(new DropCreateDatabaseIfModelChanges<PMDbContext>());
         }
 

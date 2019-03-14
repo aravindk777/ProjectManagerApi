@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using NLog.Config;
-using NLog.Extensions.Logging;
+﻿using NLog.Config;
 using NLog.Targets;
 using PM.Api.Controllers;
 using PM.BL.Projects;
