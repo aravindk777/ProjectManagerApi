@@ -22,6 +22,7 @@ namespace PM.Api.Controllers
         }
 
         // GET: api/Projects
+        [HttpGet]
         public IHttpActionResult Get()
         {
             try
@@ -33,11 +34,12 @@ namespace PM.Api.Controllers
             catch (Exception ex)
             {
                 logger.LogError(ex, "Error during Get All Projects", ex.StackTrace);
-                return InternalServerError(ex);
+                return InternalServerError();
             }
         }
 
         // GET: api/Projects/5
+        [HttpGet]
         public IHttpActionResult Get(int id)
         {
             try
@@ -47,11 +49,12 @@ namespace PM.Api.Controllers
             }
             catch (Exception ex)
             {
-                return InternalServerError(ex);
+                return InternalServerError();
             }
         }
 
         // POST: api/Projects
+        [HttpPost]
         public IHttpActionResult Post([FromBody]Project value)
         {
             if (ModelState.IsValid)
@@ -65,13 +68,30 @@ namespace PM.Api.Controllers
                 catch (Exception ex)
                 {
                     logger.LogError(ex, "Error during POST for Projects with incoming Values: {0}", value.Stringify());
-                    return InternalServerError(ex);
+                    return InternalServerError();
                 }
             }
             else
             {
                 logger.LogWarning("Invalid ModelState. See below for details.\nModelState: {0}\nData supplied:{1}", ModelState.Stringify(), value.Stringify());
                 return BadRequest(ModelState);
+            }
+        }
+
+        // POST to End a project
+        [HttpPost]
+        [Route("api/Projects/{id}/End")]
+        public IHttpActionResult EndProject(int id)
+        {
+            try
+            {
+                var status = _projectOrhestrator.EndProject(id);
+                return Ok(status);
+            }
+            catch(Exception ex)
+            {
+                logger.LogError(ex, "Error during Ending a project for " + id);
+                return InternalServerError();
             }
         }
 
@@ -83,12 +103,15 @@ namespace PM.Api.Controllers
                 try
                 {
                     var result = _projectOrhestrator.Modify(id, value);
-                    return Ok(result);
+                    if (result)
+                        return Ok(result);
+                    else
+                        return NotFound();
                 }
                 catch (Exception ex)
                 {
                     logger.LogError(ex, $"Error during Update to Project Id {id} with values: {value.Stringify()}");
-                    return InternalServerError(ex);
+                    return InternalServerError();
                 }
             }
             else
@@ -109,7 +132,7 @@ namespace PM.Api.Controllers
             catch (Exception ex)
             {
                 logger.LogError(ex, "Error during Deleting the Project with Id {0}", id);
-                return InternalServerError(ex);
+                return InternalServerError();
             }
         }
 
