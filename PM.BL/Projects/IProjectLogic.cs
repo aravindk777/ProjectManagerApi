@@ -14,5 +14,6 @@ namespace PM.BL.Projects
         bool Remove(int projId);
         Models.ViewModels.Project GetProject(int projId = 0, string projectName = "");
         IEnumerable<Models.ViewModels.Project> GetUserProjects(string userId);
+        bool EndProject(int projId);
     }
 }

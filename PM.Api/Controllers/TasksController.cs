@@ -85,7 +85,6 @@ namespace PM.Api.Controllers
         // POST: api/Tasks
         public IHttpActionResult Post([FromBody] Task value)
         {
-            //return Created("", value);
             if (ModelState.IsValid)
             {
                 try

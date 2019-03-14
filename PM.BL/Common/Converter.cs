@@ -14,6 +14,7 @@ namespace PM.BL.Common
             var config = new MapperConfiguration(cfg => {
                 cfg.CreateMap<PM.Models.DataModel.Project, PM.Models.ViewModels.Project>()
                 .ForMember(vm => vm.ManagerName, dm => dm.MapFrom(m => m.Manager != null ? m.Manager.FirstName + (!string.IsNullOrEmpty(m.Manager.LastName) ? $" {m.Manager.LastName}" : string.Empty) : string.Empty))
+                .ForMember(vm => vm.IsActive, dm => dm.MapFrom(m => (m.ProjectEnd.HasValue && m.ProjectEnd.Value <= System.DateTime.Today) ? false: true))
                 .ReverseMap();
             });
 
@@ -26,6 +27,7 @@ namespace PM.BL.Common
             {
                 cfg.CreateMap<PM.Models.DataModel.Project, PM.Models.ViewModels.Project>()
                 .ForMember(vm => vm.ManagerName, dm => dm.MapFrom(m => m.Manager != null ? m.Manager.FirstName + (!string.IsNullOrEmpty(m.Manager.LastName) ? $" {m.Manager.LastName}" : string.Empty) : string.Empty))
+                .ForMember(vm => vm.IsActive, dm => dm.MapFrom(m => (m.ProjectEnd.HasValue && m.ProjectEnd.Value <= System.DateTime.Today) ? false : true))
                 .ReverseMap();
             });
 

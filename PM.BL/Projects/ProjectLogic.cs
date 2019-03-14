@@ -1,8 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using PM.BL.Common;
+﻿using PM.BL.Common;
 using PM.Data.Repos.Projects;
 using PM.Models.ViewModels;
+using System.Collections.Generic;
 
 namespace PM.BL.Projects
 {
@@ -20,15 +19,27 @@ namespace PM.BL.Projects
             return _projectRepo.Count();
         }
 
-        public Project CreateProject(Models.ViewModels.Project project)
+        public Project CreateProject(Project project)
         {
             return _projectRepo.Create(project.AsDataModel()).AsViewModel();
         }
 
-        public IEnumerable<Models.ViewModels.Project> GetAllProjects()
+        public bool EndProject(int projId)
+        {
+            var projectToEnd = _projectRepo.GetById(projId);
+            if (projectToEnd != null)
+            {
+                projectToEnd.ProjectEnd = System.DateTime.Today;
+                return _projectRepo.Update(projectToEnd);
+            }
+            else
+                return false;
+        }
+
+        public IEnumerable<Project> GetAllProjects()
         {
             return _projectRepo.GetAll().AsViewModel();
-                    //.Select(item => item.AsViewModel());
+            //.Select(item => item.AsViewModel());
         }
 
         public Project GetProject(int projId = 0, string projectName = "")
@@ -39,15 +50,18 @@ namespace PM.BL.Projects
         public IEnumerable<Project> GetUserProjects(string userId)
         {
             var result = _projectRepo.Search(p => p.Manager.UserId == userId).AsViewModel();
-                //.Select(item => item.AsViewModel());
+            //.Select(item => item.AsViewModel());
             //var finaldata = result.AsViewModel();
             //return _projectRepo.GetAll().Where(usr => usr.Manager.UserId == userId).AsViewModel();
             return result;
         }
 
-        public bool Modify(int projId, Models.ViewModels.Project projectViewModel)
+        public bool Modify(int projId, Project projectViewModel)
         {
-            return _projectRepo.Update(projectViewModel.AsDataModel());
+            if (_projectRepo.GetById(projId) != null)
+                return _projectRepo.Update(projectViewModel.AsDataModel());
+            else
+                return false;
         }
 
         public bool Remove(int projId)
