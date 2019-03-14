@@ -19,12 +19,24 @@ namespace PM.BL.Projects
             return _projectRepo.Count();
         }
 
-        public Project CreateProject(Models.ViewModels.Project project)
+        public Project CreateProject(Project project)
         {
             return _projectRepo.Create(project.AsDataModel()).AsViewModel();
         }
 
-        public IEnumerable<Models.ViewModels.Project> GetAllProjects()
+        public bool EndProject(int projId)
+        {
+            var projectToEnd = _projectRepo.GetById(projId);
+            if (projectToEnd != null)
+            {
+                projectToEnd.ProjectEnd = System.DateTime.Today;
+                return _projectRepo.Update(projectToEnd);
+            }
+            else
+                return false;
+        }
+
+        public IEnumerable<Project> GetAllProjects()
         {
             return _projectRepo.GetAll().AsViewModel();
             //.Select(item => item.AsViewModel());
