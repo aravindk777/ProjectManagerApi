@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PM.BL.Users
+namespace PM.BL.Common
 {
-    public interface IUsersLogic
+    public interface ICommonLogic
     {
-
+        int Count();
     }
 }

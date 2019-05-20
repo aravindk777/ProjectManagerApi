@@ -1,24 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
-namespace PM.Models.DataModel
+namespace PM.Models.ViewModels
 {
-    [Table("Projects")]
     public class Project
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ProjectId { get; set; }
+        [Required]
         public string ProjectName { get; set; }
+        public int Priority { get; set; }
         public DateTime? ProjectStart { get; set; }
         public DateTime? ProjectEnd { get; set; }
+        public bool IsActive { get; set; }
+        [Required]
         public Guid ManagerId { get; set; }
-        public virtual User Manager { get; set; }
-        public int Priority { get; set; }
+        public string ManagerName { get; set; }
     }
 }

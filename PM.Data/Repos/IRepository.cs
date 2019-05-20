@@ -15,5 +15,6 @@ namespace PM.Data.Repos
         bool Update(T entity);
         bool Delete(T entity);
         IEnumerable<T> Search(Expression<Func<T, bool>> query);
+        int Count();
     }
 }

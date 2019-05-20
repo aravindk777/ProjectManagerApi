@@ -17,6 +17,11 @@ namespace PM.Data.Repos
             Context = _context;
         }
 
+        public int Count()
+        {
+            return Context.Set<T>().Count();
+        }
+
         public T Create(T entity)
         {
             try
@@ -26,9 +31,9 @@ namespace PM.Data.Repos
                 Context.Entry<T>(entity).Reload();
                 return entity;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw ex;
+                throw;
             }
         }
 
@@ -39,9 +44,9 @@ namespace PM.Data.Repos
                 Context.Set<T>().Remove(entity);
                 return Context.SaveChanges() != 0;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw ex;
+                throw;
             }
         }
 
@@ -50,7 +55,7 @@ namespace PM.Data.Repos
             return Context.Set<T>().AsEnumerable();
         }
 
-        public T GetById(object identifier)
+        public virtual T GetById(object identifier)
         {
             return Context.Set<T>().Find(identifier);
         }
@@ -71,9 +76,9 @@ namespace PM.Data.Repos
                 //Context.Entry(entity).CurrentValues.SetValues(entity);
                 return Context.SaveChanges() != 0;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw ex;
+                throw;
             }
         }
     }
